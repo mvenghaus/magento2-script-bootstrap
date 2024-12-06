@@ -19,7 +19,7 @@ composer require mvenghaus/magento2-script-bootstrap
 
 **NOTE** It's not a magento module so you don't have to run setup:upgrade.
 
-## Example 
+## Basic Example 
 
 Let's assume you have a folder "scripts" in your root directory.
 
@@ -49,4 +49,43 @@ class Script implements ScriptInterface
 }
 
 Bootstrap::run(Script::class);
+```
+
+### Just run it
+```bash
+php script/hello-world.php
+```
+
+## Modfiy the enviroment
+
+You can use the following PHP attributes on your ```run``` method to modify your environment.
+
+### #[SetAreaCode]
+
+You can easily update your area code with this attribute.
+
+```php
+#[SetArea(\Magento\Framework\App\Area::AREA_ADMINHTML)]
+```
+
+### #[SetSecureArea]
+
+Certain operations, such as deleting in Magento, need to be performed within a 'secure area.' This attribute activates that functionality. 
+
+```php
+#[SetSecureArea]
+```
+
+## Example
+
+```php
+...
+    #[SetArea(\Magento\Framework\App\Area::AREA_ADMINHTML)]
+    #[SetSecureArea]
+    public function run(): void
+    {
+        echo $this->translitUrl->filter('Hello World');
+    }
+
+...
 ```
